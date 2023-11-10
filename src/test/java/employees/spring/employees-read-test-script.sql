@@ -1,0 +1,10 @@
+delete from employees;
+delete from worktitles;
+insert into worktitles (work_title) values('Manager');
+insert into worktitles (work_title) values('Senior Manager');
+insert into worktitles (work_title) values('Programmer');
+insert into worktitles (work_title) values('Designer');
+insert into employees (id, image_url, worktitles_id, name) values(126, '', 'Senior Manager', 'Eyal Golan');
+insert into employees (id, image_url, worktitles_id, name) values(127, '', 'Designer', 'Bar Refaeli');
+insert into employees (id, image_url, worktitles_id, name) values(128, '', 'Senior Manager', 'Maor Edri');
+insert into employees (id, image_url, worktitles_id, name) values(129, '', 'Programmer', 'Maya Boskila');
