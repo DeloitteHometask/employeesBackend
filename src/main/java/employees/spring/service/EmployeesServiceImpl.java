@@ -29,6 +29,8 @@ public class EmployeesServiceImpl implements EmployeesService {
 	long minId;
 	@Value("${app.employee.id.max:999999}")
 	long maxId;
+	@Value("${app.employee.pageSize=20}")
+	long pageSize;
 
 	@Override
 	@Transactional(readOnly = false)
@@ -82,7 +84,9 @@ public class EmployeesServiceImpl implements EmployeesService {
 
 	@Override
 	public List<EmployeeEntity> findEmployeesByPattern(String patten) {
-		return employeeRepository.findEmployeesByPattern(patten);
+		List<EmployeeEntity> res = employeeRepository.findEmployeesByPattern(patten);
+		log.debug("Amount of received employees by pattern {} : {}", patten, res.size());
+		return res;
 	}
 
 	

@@ -15,13 +15,14 @@ import employees.spring.dto.EmployeeDto;
 import employees.spring.entity.EmployeeEntity;
 import employees.spring.service.EmployeesService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("company")
 @RequiredArgsConstructor
 @Validated
 @CrossOrigin
-//@Slf4j
+@Slf4j
 public class EmployeeController {
 
 	private final EmployeesService service;
@@ -29,7 +30,6 @@ public class EmployeeController {
 	@PostMapping("/employees")
 	public EmployeeDto addEmployee(@RequestBody EmployeeDto employee) {
 		EmployeeDto res = service.addEmployee(employee);
-//		log.debug("Employee with id {} was added", res.getId());
 		return res;
 	}
 
@@ -45,9 +45,9 @@ public class EmployeeController {
 
 	@GetMapping("/employees/sorted/{pattern}")
 	public List<EmployeeEntity> getAllEmployeesSortByPattern(@PathVariable String pattern) {
+		log.debug("Received pattern {}", pattern);
 		return service.findEmployeesByPattern(pattern);
 	}
-
 
 //	List<AutocompleteItem> items = service.search(query);
 //    return ResponseEntity.ok(items);
