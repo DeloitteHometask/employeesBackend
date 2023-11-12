@@ -12,15 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import employees.spring.dto.EmployeeDto;
-import employees.spring.dto.WorkTitleDto;
 import employees.spring.entity.EmployeeEntity;
-import employees.spring.entity.WorkTitleEntity;
 import employees.spring.service.EmployeesService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequestMapping("employees")
+@RequestMapping("company")
 @RequiredArgsConstructor
 @Validated
 @CrossOrigin
@@ -33,13 +30,6 @@ public class EmployeeController {
 	public EmployeeDto addEmployee(@RequestBody EmployeeDto employee) {
 		EmployeeDto res = service.addEmployee(employee);
 //		log.debug("Employee with id {} was added", res.getId());
-		return res;
-	}
-
-	@PostMapping("/worktitles")
-	public WorkTitleDto addworkTitle(@RequestBody WorkTitleDto workTitle) {
-		WorkTitleDto res = service.addWorkTitle(workTitle);
-//		log.debug("WorkTitle {} was added", res.getWorkTitle());
 		return res;
 	}
 
@@ -58,8 +48,7 @@ public class EmployeeController {
 		return service.findEmployeesByPattern(pattern);
 	}
 
-	@GetMapping("/worktitles")
-	public List<WorkTitleEntity> getAllWorkTitles() {
-		return service.getAllWorkTitlesEntities();
-	}
+
+//	List<AutocompleteItem> items = service.search(query);
+//    return ResponseEntity.ok(items);
 }

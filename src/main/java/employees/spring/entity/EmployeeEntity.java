@@ -24,8 +24,9 @@ import lombok.NoArgsConstructor;
 public class EmployeeEntity {
 	
 	@Id
-	public String id;
-	@Column(name="image_url")
+//	@GeneratedValue(strategy = GenerationType.AUTO)
+	public long id;
+	@Column(name="image_url") 
 	String imageUrl;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -34,16 +35,10 @@ public class EmployeeEntity {
 	WorkTitleEntity workTitle;
 	String name;
 	
-	
 	public EmployeeDto build() {
-		return new EmployeeDto(imageUrl, workTitle == null ? null : workTitle.getWorkTitle(), name);
+		return new EmployeeDto(id, imageUrl, workTitle == null ? null : workTitle.getWorkTitle(), name);
 	}
 		
-//	private String generateId(String name2) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-
 	public static EmployeeEntity of(EmployeeDto employeeDto) {
 		return new EmployeeEntity(employeeDto.getId(), employeeDto.getImageUrl(), null, employeeDto.getName());
 	}

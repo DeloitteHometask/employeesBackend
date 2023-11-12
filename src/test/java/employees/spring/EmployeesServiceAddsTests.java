@@ -1,9 +1,7 @@
 package employees.spring;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -13,9 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import employees.spring.dto.EmployeeDto;
 import employees.spring.dto.WorkTitleDto;
-import employees.spring.dto.WorkType;
-import employees.spring.entity.WorkTitleEntity;
 import employees.spring.service.EmployeesService;
+import employees.spring.service.WorkTitleService;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -26,7 +23,9 @@ class EmployeesServiceAddsTests {
 	private static final String WORK_TITLE_WRONG = "Manager1";
 
 	@Autowired
-	EmployeesService service;
+	EmployeesService employeesService;
+	@Autowired
+	WorkTitleService workTitleService;
 	
 //	WorkType.MANAGER
 	WorkTitleDto workTitleDto = new WorkTitleDto("Manager");
@@ -44,21 +43,21 @@ class EmployeesServiceAddsTests {
 //	@Disabled
 	@Order(1)
 	void addWorkTitle() {
-		WorkTitleDto res = service.addWorkTitle(workTitleDto);
+		WorkTitleDto res = workTitleService.addWorkTitle(workTitleDto);
 		assertEquals(workTitleDto.getWorkTitle(), res.getWorkTitle());
 		//SECOND TIME
-		assertThrowsExactly(IllegalStateException.class, () -> service.addWorkTitle(workTitleDto));
+		assertThrowsExactly(IllegalStateException.class, () -> workTitleService.addWorkTitle(workTitleDto));
 	}
 	
 	@Test
 //	@Disabled
 	@Order(2)
 	void addEmployee() {
-		EmployeeDto res = service.addEmployee(employeeDto);		
+		EmployeeDto res = employeesService.addEmployee(employeeDto);		
 		assertEquals(ID_EMPLOYEE, res.getId());
 		assertEquals(WORK_TITLE, res.getWorkTitle());
 		//SECOND TIME
-		assertThrowsExactly(IllegalStateException.class, () -> service.addEmployee(employeeDto));
+		assertThrowsExactly(IllegalStateException.class, () -> employeesService.addEmployee(employeeDto));
 		
 //		assertThrowsExactly(Exception.class, ()-> service.addEmployee(employeeDtoWrongWorkTitle));
 //		assertThrowsExactly(IllegalStateException.class, ()-> service.addEmployee(employeeDtoNoWorkTitle));

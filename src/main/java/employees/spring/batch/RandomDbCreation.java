@@ -1,12 +1,9 @@
 package employees.spring.batch;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -14,11 +11,9 @@ import org.springframework.stereotype.Component;
 import employees.spring.dto.EmployeeDto;
 import employees.spring.dto.WorkTitleDto;
 import employees.spring.dto.WorkType;
-import employees.spring.entity.EmployeeEntity;
 import employees.spring.entity.WorkTitleEntity;
-import employees.spring.repo.EmployeeRepository;
-import employees.spring.repo.WorkTitleRepository;
 import employees.spring.service.EmployeesService;
+import employees.spring.service.WorkTitleService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,36 +23,36 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RandomDbCreation {
 
-	final EmployeesService service;
+	final EmployeesService employeesService;
+	final WorkTitleService workTitleService;
 
-	@Value("${app.random.employees.amount:100}")
+	@Value("${app.random.employees.amount:10}")
 	int nEmployees;
 	@Value("${app.random.employees.initial-id:100000}")
 	int initialEmployeeId;
 	@Value("${app.random.workTitles.amount:5}")
 	int nWorkTitles;
-//	@Value("${app.random.employees.names.female:}")
 	@Value("#{'${app.random.employees.names.female:Alice,Bob,Charlie,Diana,Emily,Fiona,Grace,Holly,Ivy,Julia}'.split(',')}")
 	List<String> femaleNames;
 	@Value("#{'${app.random.employees.names.male:Adam,Benjamin,Charlie,David,Ethan,Frank,George,Henry,Isaac,Jack}'.split(',')}")
 	List<String> maleNames;
 	@Value("#{'${app.random.employees.surnames:Smith,Johnson,Williams,Jones,Brown,Davis,Miller,Wilson,Moore,Taylor,Anderson,Thomas,Jackson,White,Harris}'.split(',')}")
 	List<String> surnames;
-	@Value("#{'${app.random.employees.images.female:http,http,http,http}'.split(',')}")
+	@Value("#{'${app.random.employees.images.female:https://i.ibb.co/mCcwP0v/woman1.png,https://i.ibb.co/7K2tfzG/woman2.png,https://i.ibb.co/4193Cn1/woman3.png,https://i.ibb.co/n7TPdmy/woman4.png}'.split(',')}")
 	List<String> femaleImages;
-	@Value("#{'${app.random.employees.images.male:http,http,http,http}'.split(',')}")
+	@Value("#{'${app.random.employees.images.male:https://i.ibb.co/9tpb41k/men1.png,https://i.ibb.co/0CZFXM9/men2.png,https://i.ibb.co/B2jgg9k/men3.png,https://i.ibb.co/D4Gmcvs/men4.png}'.split(',')}")
 	List<String> maleImages;
 	@Value("${app.random.creation.enable:false}")
 	boolean creationEnable;
 	int countErrors = 0;
 	List<String> workTitles = new ArrayList<>();
-
+	
 	@PostConstruct
 	void createDb() {
 		if (creationEnable) {
 			
 			createWorkTitles();
-			workTitles = service.getAllWorkTitles();
+			workTitles = workTitleService.getAllWorkTitles();
 			if (workTitles.size() > 0) {
 				createEmployees();
 			}
@@ -76,7 +71,7 @@ public class RandomDbCreation {
 		IntStream.rangeClosed(1, nWorkTitles).mapToObj(i -> 
 				getRandomWorkTitleEntity(i)).forEach(workTitle -> {
 			try {
-				service.addWorkTitle(workTitle);
+				workTitleService.addWorkTitle(workTitle);
 			} catch (Exception e) {
 				log.error("error: {}", e);
 				countErrors++;
@@ -102,7 +97,7 @@ public class RandomDbCreation {
 		IntStream.rangeClosed(initialEmployeeId, initialEmployeeId + nEmployees)
 				.mapToObj(index -> getRandomEmployee(index)).forEach(employee -> {
 					try {
-						service.addEmployee(employee);
+						employeesService.addEmployee(employee);
 					} catch (Exception e) {
 						log.error("error: {}", e);
 						countErrors++;
@@ -113,7 +108,7 @@ public class RandomDbCreation {
 	private EmployeeDto getRandomEmployee(long index) {
 		String gender = getRandomGender();
 		String imageUrl = getRandomImageUrl(gender);
-		String name = getRandomName(gender) + getRandomObject(surnames);
+		String name = getRandomName(gender) + " " + getRandomObject(surnames);
 		WorkTitleEntity workTitle = new WorkTitleEntity(getRandomObject(workTitles));
 		return new EmployeeDto(index, imageUrl, workTitle.getWorkTitle(), name);
 	}
@@ -131,7 +126,7 @@ public class RandomDbCreation {
 	}
 
 	private String getRandomGender() {
-		return getRandomNumber(0, 2) == 0 ? "Male" : "Female";
+		return getRandomNumber(0, 2) == 0 ? "male" : "female";
 	}
 
 	private int getRandomNumber(int min, int max) {

@@ -9,8 +9,6 @@ import employees.spring.entity.WorkTitleEntity;
 
 public interface WorkTitleRepository extends JpaRepository<WorkTitleEntity, String> {
 
-	
-	//     ПОМЕНЯТЬ НА ПОИСК ПО ИМЕНИ?? 
 	@Query(value = "SELECT work_title FROM worktitles", nativeQuery = true)
 	List<String> getAllWorkTitles();
 	

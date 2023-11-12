@@ -9,25 +9,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import employees.spring.dto.EmployeeDto;
-import employees.spring.dto.WorkTitleDto;
 import employees.spring.entity.EmployeeEntity;
 import employees.spring.entity.WorkTitleEntity;
 import employees.spring.repo.EmployeeRepository;
 import employees.spring.repo.WorkTitleRepository;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@Transactional(readOnly = true) // из Spring вместо Lock - но это не для класса и объекта, а для всей БД
+@Transactional(readOnly = true)
 public class EmployeesServiceImpl implements EmployeesService {
 
 	final EmployeeRepository employeeRepository;
 	final WorkTitleRepository workTitleRepository;
-
-	final EntityManager entityManager;// что это?
 
 	@Value("${app.employee.id.min:100000}")
 	long minId;
@@ -118,40 +114,7 @@ public class EmployeesServiceImpl implements EmployeesService {
 		return employeeRepository.findEmployeesByPattern(patten);
 	}
 
-	@Override
-	@Transactional(readOnly = false)
-	public WorkTitleDto addWorkTitle(WorkTitleDto workTitleDto) {
-		String id = workTitleDto.getWorkTitle();
-		if (workTitleRepository.existsById(id)) {
-			throw new IllegalStateException(String.format("WorkTitle with name %s already exists ", id));// код 400
-		}
-		WorkTitleEntity workTitle = WorkTitleEntity.of(workTitleDto);
-		WorkTitleDto res = workTitleRepository.save(workTitle).build();
-		log.debug("WorkTitle {} was added", res.getWorkTitle());
-		return res;
-	}
-
-//	@Override
-//	public WorkTitleDto updateWorkTitle(String workTitle, WorkTitleDto workTitleDto) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public void removeWorkTitle(long EmployeeId) {
-//		// TODO Auto-generated method stub
-//		
-//	}
-
-	@Override
-	public List<WorkTitleEntity> getAllWorkTitlesEntities() {
-		return workTitleRepository.findAll();
-	}
-
-	@Override
-	public List<String> getAllWorkTitles() {
-		return workTitleRepository.getAllWorkTitles();
-	}
+	
 
 
 

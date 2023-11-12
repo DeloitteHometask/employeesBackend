@@ -1,6 +1,5 @@
 package employees.spring.dto;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

@@ -1,12 +1,12 @@
 package employees.spring.dto;
 
-import employees.spring.entity.WorkTitleEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @AllArgsConstructor
 @Data
 public class EmployeeDto {
+	Long id;
 	String imageUrl;
 	String workTitle;
 	String name;

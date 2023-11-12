@@ -1,13 +1,9 @@
 package employees.spring.entity;
 
 import employees.spring.dto.WorkTitleDto;
-import employees.spring.dto.WorkType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +13,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-//(access = AccessLevel.PRIVATE)
 public class WorkTitleEntity {
 	@Id
 	String workTitle;
