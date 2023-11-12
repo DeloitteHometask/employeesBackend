@@ -32,6 +32,8 @@ public class RandomDbCreation {
 	int initialEmployeeId;
 	@Value("${app.random.workTitles.amount:5}")
 	int nWorkTitles;
+	@Value("#{'${app.random.workTitles:Programmer,Consultant,Designer,Manager,Senior Manager}'.split(',')}")
+	List<String> workTitleNames;
 	@Value("#{'${app.random.employees.names.female:Alice,Bob,Charlie,Diana,Emily,Fiona,Grace,Holly,Ivy,Julia}'.split(',')}")
 	List<String> femaleNames;
 	@Value("#{'${app.random.employees.names.male:Adam,Benjamin,Charlie,David,Ethan,Frank,George,Henry,Isaac,Jack}'.split(',')}")
@@ -68,30 +70,32 @@ public class RandomDbCreation {
 	}
 
 	private void createWorkTitles() {
-		IntStream.rangeClosed(1, nWorkTitles).mapToObj(i -> 
-				getRandomWorkTitleEntity(i)).forEach(workTitle -> {
-			try {
-				workTitleService.addWorkTitle(workTitle);
-			} catch (Exception e) {
-				log.error("error: {}", e);
-				countErrors++;
-			}
-		});
+		workTitleNames.forEach(wt -> workTitleService.addWorkTitle(new WorkTitleDto(wt)));
+		
+//		IntStream.rangeClosed(1, nWorkTitles).mapToObj(i -> 
+//				getRandomWorkTitleEntity(i)).forEach(workTitle -> {
+//			try {
+//				workTitleService.addWorkTitle(workTitle);
+//			} catch (Exception e) {
+//				log.error("error: {}", e);
+//				countErrors++;
+//			}
+//		});
 	}
 
-	private WorkTitleDto getRandomWorkTitleEntity(int index) {
-		String name = "workTitle" + index;
-		WorkType workType = randomSubjectType();
-//		return new WorkTitleDto(name, workType);
-		return new WorkTitleDto(name);
+//	private WorkTitleDto getRandomWorkTitleEntity(int index) {
+//		String name = getRandomObject(workTitleNames);
+////		WorkType workType = randomSubjectType();
+////		return new WorkTitleDto(name, workType);
+//		return new WorkTitleDto(name);
+//
+//	}
 
-	}
-
-	private WorkType randomSubjectType() {
-		WorkType[] values = WorkType.values();
-		int index = getRandomNumber(0, values.length);
-		return values[index];
-	}
+//	private WorkType randomSubjectType() {
+//		WorkType[] values = WorkType.values();
+//		int index = getRandomNumber(0, values.length);
+//		return values[index];
+//	}
 
 	private void createEmployees() {
 		IntStream.rangeClosed(initialEmployeeId, initialEmployeeId + nEmployees)

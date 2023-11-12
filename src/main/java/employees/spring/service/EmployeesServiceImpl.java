@@ -54,23 +54,7 @@ public class EmployeesServiceImpl implements EmployeesService {
 	
 	
 	
-//	public SubjectDto addSubject(SubjectDto subjectDto) {
-//		String id = subjectDto.getId();
-//		if (subjectRepository.existsById(id)) {
-//			throw new IllegalStateException(String.format("Subject with id %s already exists ", id));// код 400
-//		}
-//		Lecturer lecturer = null;
-//		Long lecturerId = subjectDto.getLecturerId();
-//		if (lecturerId != null) {
-//			lecturer = lecturerRepository.findById(lecturerId).orElseThrow(
-//					() -> (new NotFoundException(String.format("Lecturer with id %d does not exists", lecturerId))));
-//		}
-//		Subject subjectEntity = Subject.of(subjectDto);
-//		subjectEntity.setLecturer(lecturer);
-//		SubjectDto res = subjectRepository.save(subjectEntity).build();
-//		log.debug("Subject added {}", res);
-//		return res;
-//	}
+
 
 	private Long getEmployeeUniqueId() {
 		return getUniqueId(employeeRepository);
@@ -83,21 +67,8 @@ public class EmployeesServiceImpl implements EmployeesService {
 		} while (repository.existsById(res));
 		return res;
 	}
+	
 
-//	@Override
-//	public EmployeeDto updateEmployee(long EmployeeId, EmployeeDto employeeDto) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-
-//	@Override
-//	@Transactional(readOnly = false)
-//	public void removeEmployee(long employeeId) {
-//		Employee employeeForRemove = employeeRepository.findById(lecturerId).orElseThrow(
-//				() -> new NotFoundException(String.format("Lecturer with id %s does not exist", lecturerId)));
-//		lecturerRepository.delete(lecturerForRemove);
-//		return lecturerForRemove.build();
-//	}
 
 	@Override
 	public List<EmployeeEntity> getAllEmployees() {
@@ -120,3 +91,36 @@ public class EmployeesServiceImpl implements EmployeesService {
 
 
 }
+
+//public SubjectDto addSubject(SubjectDto subjectDto) {
+//String id = subjectDto.getId();
+//if (subjectRepository.existsById(id)) {
+//	throw new IllegalStateException(String.format("Subject with id %s already exists ", id));// код 400
+//}
+//Lecturer lecturer = null;
+//Long lecturerId = subjectDto.getLecturerId();
+//if (lecturerId != null) {
+//	lecturer = lecturerRepository.findById(lecturerId).orElseThrow(
+//			() -> (new NotFoundException(String.format("Lecturer with id %d does not exists", lecturerId))));
+//}
+//Subject subjectEntity = Subject.of(subjectDto);
+//subjectEntity.setLecturer(lecturer);
+//SubjectDto res = subjectRepository.save(subjectEntity).build();
+//log.debug("Subject added {}", res);
+//return res;
+//}
+
+//@Override
+//public EmployeeDto updateEmployee(long EmployeeId, EmployeeDto employeeDto) {
+//	// TODO Auto-generated method stub
+//	return null;
+//}
+
+//@Override
+//@Transactional(readOnly = false)
+//public void removeEmployee(long employeeId) {
+//	Employee employeeForRemove = employeeRepository.findById(lecturerId).orElseThrow(
+//			() -> new NotFoundException(String.format("Lecturer with id %s does not exist", lecturerId)));
+//	lecturerRepository.delete(lecturerForRemove);
+//	return lecturerForRemove.build();
+//}

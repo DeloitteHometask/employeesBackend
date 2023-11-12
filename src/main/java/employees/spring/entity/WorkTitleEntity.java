@@ -1,5 +1,7 @@
 package employees.spring.entity;
 
+import java.io.Serializable;
+
 import employees.spring.dto.WorkTitleDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -13,7 +15,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class WorkTitleEntity {
+public class WorkTitleEntity implements Serializable {
+	private static final long serialVersionUID = 7255108790636917400L;
 	@Id
 	String workTitle;
 
