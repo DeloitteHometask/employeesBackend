@@ -1,7 +1,12 @@
 package employees.spring.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +20,7 @@ import employees.spring.repo.EmployeeRepository;
 import employees.spring.repo.WorkTitleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
+ 
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -29,8 +34,8 @@ public class EmployeesServiceImpl implements EmployeesService {
 	long minId;
 	@Value("${app.employee.id.max:999999}")
 	long maxId;
-	@Value("${app.employee.pageSize=20}")
-	long pageSize;
+	@Value("${app.employee.pageSize:1}")
+	private int pageSize;
 
 	@Override
 	@Transactional(readOnly = false)
@@ -72,21 +77,42 @@ public class EmployeesServiceImpl implements EmployeesService {
 	
 
 
+//	@Override
+//	public List<EmployeeEntity> getAllEmployees(int page) {
+//		List<EmployeeEntity> receivedEmployees = employeeRepository.findAll(); 
+//		return getEmployeesByPage(page, receivedEmployees);
+//	}
+	
 	@Override
 	public List<EmployeeEntity> getAllEmployees() {
-		return employeeRepository.findAll();
+		List<EmployeeEntity> receivedEmployees = employeeRepository.findAll(); 
+		return receivedEmployees;
 	}
+	
+//	@Override
+//	public List<EmployeeEntity> getAllEmployeesSortedByFirstLettersOfNameSurname(int page) {
+//		List<EmployeeEntity> receivedEmployees = employeeRepository.getAllEmployeesSortedByFirstLettersOfNameSurname();
+//		return getEmployeesByPage(page, receivedEmployees);
+//	}
 	
 	@Override
 	public List<EmployeeEntity> getAllEmployeesSortedByFirstLettersOfNameSurname() {
-		return employeeRepository.getAllEmployeesSortedByFirstLettersOfNameSurname();
+		List<EmployeeEntity> receivedEmployees = employeeRepository.getAllEmployeesSortedByFirstLettersOfNameSurname();
+		return receivedEmployees;
 	}
 
 	@Override
-	public List<EmployeeEntity> findEmployeesByPattern(String patten) {
-		List<EmployeeEntity> res = employeeRepository.findEmployeesByPattern(patten);
-		log.debug("Amount of received employees by pattern {} : {}", patten, res.size());
-		return res;
+	public List<EmployeeEntity> findEmployeesByPattern(String patten, int page) {
+		List<EmployeeEntity> receivedEmployees = employeeRepository.findEmployeesByPattern(patten);
+		log.debug("Amount of received employees by pattern {} : {}", patten, receivedEmployees.size());
+		return getEmployeesByPage(page, receivedEmployees);
+	}
+	
+	private List<EmployeeEntity> getEmployeesByPage(int page, List<EmployeeEntity> receivedEmployees) {
+	        return receivedEmployees.stream()
+	            .skip((long) (page - 1) * pageSize)
+	            .limit(pageSize)
+	            .collect(Collectors.toList());
 	}
 
 	

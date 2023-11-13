@@ -15,20 +15,7 @@ public interface EmployeeRepository extends JpaRepository<EmployeeEntity, Long> 
 			+ "THEN SUBSTRING(name, POSITION(' ', name) + 1) " + "ELSE '' END", nativeQuery = true)
 	List<EmployeeEntity> getAllEmployeesSortedByFirstLettersOfNameSurname();
 
-//	@Query(value = "SELECT * FROM employees " + "ORDER BY CASE "
-//			+ "  WHEN SUBSTRING(name, 1, 1) = :pattern OR SUBSTRING(worktitles_id, 1, 1) = :pattern THEN 0 " + "  ELSE 1 "
-//			+ "END", nativeQuery = true)
 
-//	@Query("SELECT e FROM employees e WHERE e.name LIKE :pattern "
-//			+ "OR e.workTitle.workTitle LIKE :pattern% " + "ORDER BY CASE " + "WHEN e.name LIKE :pattern% THEN 0 "
-//			+ "WHEN e.workTitle.workTitle LIKE :pattern% THEN 1 " + "ELSE 2 END")
-
-//	@Query(value = "SELECT e FROM employees e "
-//			+ "LEFT JOIN worktitles wt "
-//			+ "WHERE ((LOWER(SUBSTRING(e.name, 1, 1)) LIKE LOWER(CONCAT('%', :pattern, '%'))) "
-//			+ "OR (LOWER(SUBSTRING(e.name, 2, 1)) LIKE LOWER(CONCAT('%', :pattern, '%')))) "
-//			+ "OR ((LOWER(SUBSTRING(wt.workTitle, 1, 1)) LIKE LOWER(CONCAT('%', :pattern, '%'))) "
-//			+ "OR (LOWER(SUBSTRING(wt.workTitle, 2, 1)) LIKE LOWER(CONCAT('%', :pattern, '%'))))", nativeQuery = true)
 	
 	
 	@Query(value = "SELECT * FROM employees e "
@@ -39,6 +26,21 @@ public interface EmployeeRepository extends JpaRepository<EmployeeEntity, Long> 
 			+ "OR LOWER(wt.work_title) LIKE CONCAT('% ', LOWER(:pattern), '%'))", nativeQuery = true)
 	List<EmployeeEntity> findEmployeesByPattern(@Param("pattern") String pattern);
 
+	
+//	@Query(value = "SELECT * FROM employees " + "ORDER BY CASE "
+//	+ "  WHEN SUBSTRING(name, 1, 1) = :pattern OR SUBSTRING(worktitles_id, 1, 1) = :pattern THEN 0 " + "  ELSE 1 "
+//	+ "END", nativeQuery = true)
+
+//@Query("SELECT e FROM employees e WHERE e.name LIKE :pattern "
+//	+ "OR e.workTitle.workTitle LIKE :pattern% " + "ORDER BY CASE " + "WHEN e.name LIKE :pattern% THEN 0 "
+//	+ "WHEN e.workTitle.workTitle LIKE :pattern% THEN 1 " + "ELSE 2 END")
+
+//@Query(value = "SELECT e FROM employees e "
+//	+ "LEFT JOIN worktitles wt "
+//	+ "WHERE ((LOWER(SUBSTRING(e.name, 1, 1)) LIKE LOWER(CONCAT('%', :pattern, '%'))) "
+//	+ "OR (LOWER(SUBSTRING(e.name, 2, 1)) LIKE LOWER(CONCAT('%', :pattern, '%')))) "
+//	+ "OR ((LOWER(SUBSTRING(wt.workTitle, 1, 1)) LIKE LOWER(CONCAT('%', :pattern, '%'))) "
+//	+ "OR (LOWER(SUBSTRING(wt.workTitle, 2, 1)) LIKE LOWER(CONCAT('%', :pattern, '%'))))", nativeQuery = true)
 	
 //	"WHERE (LOWER(SUBSTRING(e.name, 1, 1)) LIKE LOWER(CONCAT('%', :pattern, '%')) "
 //    + "OR LOWER(SUBSTRING(e.name, 2, 1)) LIKE LOWER(CONCAT('%', :pattern, '%'))) "

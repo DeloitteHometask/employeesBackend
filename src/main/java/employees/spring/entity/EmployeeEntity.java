@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.stereotype.Indexed;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -39,6 +40,7 @@ public class EmployeeEntity implements Serializable {
 	@OnDelete(action = OnDeleteAction.SET_NULL)
 	 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	WorkTitleEntity workTitle;
+	@Column(name = "name", columnDefinition = "fulltext")//Hibernate indexing mechanism
 	String name;
 	
 	public EmployeeDto build() {

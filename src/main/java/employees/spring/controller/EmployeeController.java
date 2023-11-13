@@ -2,6 +2,8 @@ package employees.spring.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import employees.spring.dto.EmployeeDto;
@@ -44,10 +47,22 @@ public class EmployeeController {
 	}
 
 	@GetMapping("/employees/sorted/{pattern}")
-	public List<EmployeeEntity> getAllEmployeesSortByPattern(@PathVariable String pattern) {
+	public List<EmployeeEntity> getAllEmployeesSortByPattern(@PathVariable String pattern, @RequestParam("page") int page) {
 		log.debug("Received pattern {}", pattern);
-		return service.findEmployeesByPattern(pattern);
+		log.debug("Received page {}", page);
+		List<EmployeeEntity> receivedEmployees = service.findEmployeesByPattern(pattern, page);
+		return receivedEmployees;
 	}
+	
+//	@GetMapping("/page")
+//    public ResponseEntity<List<EmployeeEntity>> getEmployeesPage(@RequestParam("page") int page) {
+//        try {
+//            List<EmployeeEntity> employees = service.getEmployeesPage(page);
+//            return new ResponseEntity<>(employees, HttpStatus.OK);
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
 //	List<AutocompleteItem> items = service.search(query);
 //    return ResponseEntity.ok(items);

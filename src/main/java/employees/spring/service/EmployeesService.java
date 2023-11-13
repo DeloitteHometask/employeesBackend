@@ -17,6 +17,7 @@ public interface EmployeesService {
 	
 	List<EmployeeEntity> getAllEmployeesSortedByFirstLettersOfNameSurname();
 
-	List<EmployeeEntity> findEmployeesByPattern(String patten);
+	List<EmployeeEntity> findEmployeesByPattern(String patten, int page);
+	
 
 }
