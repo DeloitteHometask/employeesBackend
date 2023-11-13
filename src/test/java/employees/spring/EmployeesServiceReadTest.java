@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.jdbc.Sql;
 
 import employees.spring.entity.EmployeeEntity;
@@ -56,12 +57,12 @@ class EmployeesServiceReadTest {
 	
 	@Test
 	void sortedEmployeesTest() {
-		List<EmployeeEntity> employees = employeesService.getAllEmployeesSortedByFirstLettersOfNameSurname();
+		List<EmployeeEntity> employees = employeesService.getAllEmployeesSorted(Sort.by("name"));
 		assertEquals(4, employees.size());
 		assertEquals(127, employees.get(0).getId());
 		assertEquals(126, employees.get(1).getId());
-		assertEquals(129, employees.get(2).getId());
-		assertEquals(128, employees.get(3).getId());
+		assertEquals(128, employees.get(2).getId());
+		assertEquals(129, employees.get(3).getId());
 	}
 	
 	@Test

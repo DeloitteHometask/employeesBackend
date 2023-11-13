@@ -2,6 +2,10 @@ package employees.spring.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 import employees.spring.dto.EmployeeDto;
 import employees.spring.entity.EmployeeEntity;
 
@@ -9,15 +13,10 @@ public interface EmployeesService {
 
 	EmployeeDto addEmployee(EmployeeDto employeeDto);
 
-//	EmployeeDto updateEmployee(long employeeId, EmployeeDto employeeDto);
-//
-//	void removeEmployee(long eployeeId);
-
 	List<EmployeeEntity> getAllEmployees();
+	List<EmployeeEntity> getAllEmployeesSorted(Sort sort);
 	
-	List<EmployeeEntity> getAllEmployeesSortedByFirstLettersOfNameSurname();
-
-	List<EmployeeEntity> findEmployeesByPattern(String patten, int page);
+	List<EmployeeEntity> findEmployeesByPattern(String patten, int page, int size);
 	
 
 }

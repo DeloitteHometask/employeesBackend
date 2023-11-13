@@ -2,6 +2,10 @@ package employees.spring.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -42,28 +46,15 @@ public class EmployeeController {
 	}
 	
 	@GetMapping("/employees/sorted")
-	public List<EmployeeEntity> getAllEmployeesSortedByFirstLettersOfNameSurname() {
-		return service.getAllEmployeesSortedByFirstLettersOfNameSurname();
-	}
-
-	@GetMapping("/employees/sorted/{pattern}")
-	public List<EmployeeEntity> getAllEmployeesSortByPattern(@PathVariable String pattern, @RequestParam("page") int page) {
-		log.debug("Received pattern {}", pattern);
-		log.debug("Received page {}", page);
-		List<EmployeeEntity> receivedEmployees = service.findEmployeesByPattern(pattern, page);
-		return receivedEmployees;
+	public List<EmployeeEntity> getAllEmployeesSorted() {
+		return service.getAllEmployeesSorted(Sort.by("name"));
 	}
 	
-//	@GetMapping("/page")
-//    public ResponseEntity<List<EmployeeEntity>> getEmployeesPage(@RequestParam("page") int page) {
-//        try {
-//            List<EmployeeEntity> employees = service.getEmployeesPage(page);
-//            return new ResponseEntity<>(employees, HttpStatus.OK);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
-
-//	List<AutocompleteItem> items = service.search(query);
-//    return ResponseEntity.ok(items);
+	@GetMapping("/employees/sorted/{pattern}")
+    public List<EmployeeEntity> getAllEmployeesSortByPattern(@PathVariable String pattern, @RequestParam("page") int page, @RequestParam("size") int size) {
+		log.debug("Received pattern {}", pattern);
+		log.debug("Received page {}, size {}", page, size);
+		List<EmployeeEntity> receivedEmployees = service.findEmployeesByPattern(pattern, page, size);
+        return receivedEmployees;
+    }
 }

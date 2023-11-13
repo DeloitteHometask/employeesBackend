@@ -32,17 +32,17 @@ public class RandomDbCreation {
 	int initialEmployeeId;
 	@Value("${app.random.workTitles.amount:5}")
 	int nWorkTitles;
-	@Value("#{'${app.random.workTitles:Programmer,Consultant,Designer,Manager,Senior Manager}'.split(',')}")
+	@Value("#{'${app.random.workTitles}'.split(',')}")
 	List<String> workTitleNames;
-	@Value("#{'${app.random.employees.names.female:Alice,Bob,Charlie,Diana,Emily,Fiona,Grace,Holly,Ivy,Julia}'.split(',')}")
+	@Value("#{'${app.random.employees.names.female}'.split(',')}")
 	List<String> femaleNames;
-	@Value("#{'${app.random.employees.names.male:Adam,Benjamin,Charlie,David,Ethan,Frank,George,Henry,Isaac,Jack}'.split(',')}")
+	@Value("#{'${app.random.employees.names.male}'.split(',')}")
 	List<String> maleNames;
-	@Value("#{'${app.random.employees.surnames:Smith,Johnson,Williams,Jones,Brown,Davis,Miller,Wilson,Moore,Taylor,Anderson,Thomas,Jackson,White,Harris}'.split(',')}")
+	@Value("#{'${app.random.employees.surnames}'.split(',')}")
 	List<String> surnames;
-	@Value("#{'${app.random.employees.images.female:https://i.ibb.co/mCcwP0v/woman1.png,https://i.ibb.co/7K2tfzG/woman2.png,https://i.ibb.co/4193Cn1/woman3.png,https://i.ibb.co/n7TPdmy/woman4.png}'.split(',')}")
+	@Value("#{'${app.random.employees.images.female}'.split(',')}")
 	List<String> femaleImages;
-	@Value("#{'${app.random.employees.images.male:https://i.ibb.co/9tpb41k/men1.png,https://i.ibb.co/0CZFXM9/men2.png,https://i.ibb.co/B2jgg9k/men3.png,https://i.ibb.co/D4Gmcvs/men4.png}'.split(',')}")
+	@Value("#{'${app.random.employees.images.male}'.split(',')}")
 	List<String> maleImages;
 	@Value("${app.random.creation.enable:false}")
 	boolean creationEnable;
@@ -71,31 +71,7 @@ public class RandomDbCreation {
 
 	private void createWorkTitles() {
 		workTitleNames.forEach(wt -> workTitleService.addWorkTitle(new WorkTitleDto(wt)));
-		
-//		IntStream.rangeClosed(1, nWorkTitles).mapToObj(i -> 
-//				getRandomWorkTitleEntity(i)).forEach(workTitle -> {
-//			try {
-//				workTitleService.addWorkTitle(workTitle);
-//			} catch (Exception e) {
-//				log.error("error: {}", e);
-//				countErrors++;
-//			}
-//		});
 	}
-
-//	private WorkTitleDto getRandomWorkTitleEntity(int index) {
-//		String name = getRandomObject(workTitleNames);
-////		WorkType workType = randomSubjectType();
-////		return new WorkTitleDto(name, workType);
-//		return new WorkTitleDto(name);
-//
-//	}
-
-//	private WorkType randomSubjectType() {
-//		WorkType[] values = WorkType.values();
-//		int index = getRandomNumber(0, values.length);
-//		return values[index];
-//	}
 
 	private void createEmployees() {
 		IntStream.rangeClosed(initialEmployeeId, initialEmployeeId + nEmployees)
