@@ -9,10 +9,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import employees.spring.NotFoundException;
 import employees.spring.dto.EmployeeDto;
 import employees.spring.entity.EmployeeEntity;
 import employees.spring.entity.WorkTitleEntity;
-import employees.spring.exceptions.NotFoundException;
 import employees.spring.repo.EmployeeRepository;
 import employees.spring.repo.WorkTitleRepository;
 import lombok.RequiredArgsConstructor;

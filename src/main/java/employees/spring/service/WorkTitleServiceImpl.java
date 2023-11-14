@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import employees.spring.dto.WorkTitleDto;
 import employees.spring.entity.WorkTitleEntity;
-import employees.spring.exceptions.NotFoundException;
 import employees.spring.repo.WorkTitleRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;

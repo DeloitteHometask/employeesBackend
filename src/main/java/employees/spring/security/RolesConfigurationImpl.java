@@ -11,8 +11,8 @@ public class RolesConfigurationImpl implements RolesConfiguration{
 		httpSecurity.authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.OPTIONS).permitAll().
 				requestMatchers("/websocket/company/**").permitAll()
 				.requestMatchers(HttpMethod.GET).permitAll()
-				.requestMatchers(HttpMethod.POST).permitAll()
-//				.authenticated()
+				.requestMatchers("/accounts/**").permitAll()
+				.requestMatchers(HttpMethod.POST).authenticated()
 				.anyRequest().hasRole("ADMIN"));
 	}
 }

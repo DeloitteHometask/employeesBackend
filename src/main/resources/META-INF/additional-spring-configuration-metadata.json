@@ -1,0 +1,42 @@
+{"properties": [
+  {
+    "name": "app.accounts.admin.password",
+    "type": "java.lang.String",
+    "description": "Password for root admin"
+  },
+  {
+    "name": "app.jwt.signature.secret",
+    "type": "java.lang.String",
+    "description": "Password from encryption key generator for encrypt data"
+  },
+  {
+    "name": "app.random.workTitles",
+    "type": "java.lang.String",
+    "description": "Worktitles for random DB"
+  },
+  {
+    "name": "app.random.employees.names.female",
+    "type": "java.lang.String",
+    "description": "Female names for rrandom DB"
+  },
+    {
+    "name": "app.random.employees.names.male",
+    "type": "java.lang.String",
+    "description": "Male names for rrandom DB"
+  },
+  {
+    "name": "app.random.employees.surnames",
+    "type": "java.lang.String",
+    "description": "Surnames for rrandom DB"
+  },
+  {
+    "name": "app.random.employees.images.female",
+    "type": "java.lang.String",
+    "description": "Female images for rrandom DB"
+  },
+  {
+    "name": "app.random.employees.images.male",
+    "type": "java.lang.String",
+    "description": "Male images for rrandom DB"
+  }
+]}
