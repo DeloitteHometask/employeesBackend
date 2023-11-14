@@ -37,7 +37,4 @@ public class WorkTitlesController {
 		return service.getAllWorkTitlesEntities();
 	}
 
-
-//	List<AutocompleteItem> items = service.search(query);
-//    return ResponseEntity.ok(items);
 }

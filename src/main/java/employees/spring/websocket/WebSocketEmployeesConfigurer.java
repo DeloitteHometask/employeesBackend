@@ -12,11 +12,11 @@ public class WebSocketEmployeesConfigurer implements WebSocketMessageBrokerConfi
 
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry registry) {
-		registry.enableSimpleBroker("/topic");// регистрируем SimpleBroker (базовый путь для брокера)
+		registry.enableSimpleBroker("/topic");
 	}
 
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/websocket/company").setAllowedOriginPatterns("*");//базовый путь для соединения с websocket
+		registry.addEndpoint("/websocket/company").setAllowedOriginPatterns("*");
 	}
 }

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import employees.spring.dto.EmployeeDto;
 import employees.spring.dto.WorkTitleDto;
-import employees.spring.dto.WorkType;
 import employees.spring.entity.WorkTitleEntity;
 import employees.spring.service.EmployeesService;
 import employees.spring.service.WorkTitleService;
@@ -26,7 +25,7 @@ public class RandomDbCreation {
 	final EmployeesService employeesService;
 	final WorkTitleService workTitleService;
 
-	@Value("${app.random.employees.amount:10}")
+	@Value("${app.random.employees.amount:15}")
 	int nEmployees;
 	@Value("${app.random.employees.initial-id:100000}")
 	int initialEmployeeId;
@@ -52,13 +51,11 @@ public class RandomDbCreation {
 	@PostConstruct
 	void createDb() {
 		if (creationEnable) {
-			
 			createWorkTitles();
 			workTitles = workTitleService.getAllWorkTitles();
 			if (workTitles.size() > 0) {
 				createEmployees();
 			}
-
 			if (countErrors > 0) {
 				log.warn("DB created with {} exceptions", countErrors);
 			} else {

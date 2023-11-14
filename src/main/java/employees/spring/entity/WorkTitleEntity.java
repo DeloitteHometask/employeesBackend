@@ -30,22 +30,3 @@ public class WorkTitleEntity implements Serializable {
 
 	}
 }
-
-
-//@Id
-//String workTitle;
-////@Enumerated(EnumType.STRING)
-////WorkType type;
-//
-//
-//public WorkTitleDto build() {
-////	return new WorkTitleDto(workTitle, type);
-//	return new WorkTitleDto(workTitle);
-//
-//}
-//
-//static public WorkTitleEntity of(WorkTitleDto workTitleDto) {
-////	return new WorkTitleEntity(workTitleDto.getWorkTitle(), workTitleDto.getType());
-//	return new WorkTitleEntity(workTitleDto.getWorkTitle());
-//
-//}

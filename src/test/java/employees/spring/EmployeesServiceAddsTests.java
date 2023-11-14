@@ -1,67 +1,77 @@
 package employees.spring;
 
-import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
+import java.util.Optional;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import employees.spring.dto.EmployeeDto;
-import employees.spring.dto.WorkTitleDto;
-import employees.spring.service.EmployeesService;
-import employees.spring.service.WorkTitleService;
+import employees.spring.entity.EmployeeEntity;
+import employees.spring.entity.WorkTitleEntity;
+import employees.spring.repo.EmployeeRepository;
+import employees.spring.repo.WorkTitleRepository;
+import employees.spring.service.EmployeesServiceImpl;
 
-@SpringBootTest
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class EmployeesServiceAddsTests {
-	private static final long ID_EMPLOYEE = 124l;
-	private static final long ID_EMPLOYEE_NO_WORK_TITLE = 125l;
-	private static final String WORK_TITLE = "Manager";
-	private static final String WORK_TITLE_WRONG = "Manager1";
+public class EmployeesServiceAddsTests {
 
-	@Autowired
-	EmployeesService employeesService;
-	@Autowired
-	WorkTitleService workTitleService;
-	
-//	WorkType.MANAGER
-	WorkTitleDto workTitleDto = new WorkTitleDto("Manager");
+    @Mock
+    private EmployeeRepository employeeRepository;
 
-	EmployeeDto employeeDto = new EmployeeDto(ID_EMPLOYEE, "", WORK_TITLE, "Bar Refaeli");
-	EmployeeDto employeeDtoNoId = new EmployeeDto(null, "", WORK_TITLE, "Bar Refaeli");
-	EmployeeDto employeeDtoNoWorkTitle = new EmployeeDto(ID_EMPLOYEE_NO_WORK_TITLE, "", null, "Bar Refaeli");
-	EmployeeDto employeeDtoWrongWorkTitle = new EmployeeDto(ID_EMPLOYEE_NO_WORK_TITLE, "", WORK_TITLE_WRONG, "Bar Refaeli");
+    @Mock
+    private WorkTitleRepository workTitleRepository;
 
-	@Test
-	void contextLoads() {
-	}
+    @InjectMocks
+    private EmployeesServiceImpl employeesService;
 
-	@Test
-//	@Disabled
-	@Order(1)
-	void addWorkTitle() {
-		WorkTitleDto res = workTitleService.addWorkTitle(workTitleDto);
-		assertEquals(workTitleDto.getWorkTitle(), res.getWorkTitle());
-		//SECOND TIME
-		assertThrowsExactly(IllegalStateException.class, () -> workTitleService.addWorkTitle(workTitleDto));
-	}
-	
-	@Test
-//	@Disabled
-	@Order(2)
-	void addEmployee() {
-		EmployeeDto res = employeesService.addEmployee(employeeDto);		
-		assertEquals(ID_EMPLOYEE, res.getId());
-		assertEquals(WORK_TITLE, res.getWorkTitle());
-		//SECOND TIME
-		assertThrowsExactly(IllegalStateException.class, () -> employeesService.addEmployee(employeeDto));
-		
-//		assertThrowsExactly(Exception.class, ()-> service.addEmployee(employeeDtoWrongWorkTitle));
-//		assertThrowsExactly(IllegalStateException.class, ()-> service.addEmployee(employeeDtoNoWorkTitle));
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
+
+    @Test
+    public void testAddEmployee() {
+    	
+    	EmployeeDto employeeDto = new EmployeeDto(12345L, "", "Engineer", "John Doe");
+
+        WorkTitleEntity workTitleEntity = new WorkTitleEntity();
+        workTitleEntity.setWorkTitle("Engineer");
+
+        EmployeeEntity employeeEntity = EmployeeEntity.of(employeeDto);
+        employeeEntity.setWorkTitle(workTitleEntity);
+
+        when(workTitleRepository.findById("Engineer")).thenReturn(Optional.of(workTitleEntity));
+        when(employeeRepository.existsById(12345L)).thenReturn(false);
+        when(employeeRepository.save(any(EmployeeEntity.class))).thenReturn(employeeEntity);
+
+        EmployeeDto result = employeesService.addEmployee(employeeDto);
+
+        assertNotNull(result);
+        assertEquals(12345L, result.getId());
+        assertEquals("John Doe", result.getName());
+        assertEquals("Engineer", result.getWorkTitle());
+    }
+
+    @Test
+    public void testAddEmployeeWithExistingId() {
+        EmployeeDto employeeDto = new EmployeeDto(12345L, "", "Engineer", "John Doe");
+
+        when(employeeRepository.existsById(12345L)).thenReturn(true);
+
+        assertThrows(Exception.class, () -> {
+            employeesService.addEmployee(employeeDto);
+        });
+    }
 
 
-	}
 }
